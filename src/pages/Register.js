@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Body, Button, Header, Icon, Left } from 'native-base';
 import React, { Component } from 'react'
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -35,6 +36,37 @@ export default class Register extends Component{
         this.setState({ password: e })
     }
 
+    componentDidMount(){
+        axios.get("https://182.253.124.66:3000/users")
+            .then( res => {
+                const collection = res.data
+                console.log(collection);
+                this.setState({collection})
+            })
+            .catch(err => {
+                console.log("API Error: " , err.message);
+            });
+    }
+
+    handleSubmit () {
+        const user = {
+            nama: 'this.state.nama',
+            email: 'this.state.email',
+            nohp: 'this.state.nohp',
+            password: 'this.state.password'
+        }
+
+        axios.post(`https://182.253.124.66:3000/users`, {user})
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.props.navigation.navigate("Login")
+            })
+            .catch(err => {
+                console.log("API Error: " , err.message);
+            });
+    }
+
     render(){
         const navigate = this.props;
         return(
@@ -50,41 +82,49 @@ export default class Register extends Component{
                             <Text style={{fontFamily:'RedHatDisplay-Regular', color:'white', fontWeight:'bold', fontSize:normalize(24)}}>Registrasi</Text>
                         </Body>
                     </Header>
+                    <View>
+                        {this.state.collection && this.state.collection.map((collections, index) => {
+                            console.log(collections);
+                            return(
+                                <Text>{collections.nama}</Text>
+                            )
+                        })}
+                    </View>
                     <View style={{alignItems:'center', justifyContent:'center', paddingTop:normalize(50)}}>
                         <View>
                             <TextInput
                                 value={this.state.nama}
-                                onChange={this.handleNama}
+                                onChangeText={this.handleNama}
                                 placeholder="Nama"
-                                underlineColorAndroid="black"
-                                style={{width:normalize(280)}}
+                                underlineColorAndroid="white"
+                                style={{width:normalize(280), color:'white'}}
                             />
                             <TextInput
                                 value={this.state.email}
-                                onChange={this.handleEmail}
+                                onChangeText={this.handleEmail}
                                 placeholder="Email"
-                                underlineColorAndroid="black"
-                                style={{width:normalize(280)}}
+                                underlineColorAndroid="white"
+                                style={{width:normalize(280), color:'white'}}
                             />
                             <TextInput
                                 value={this.state.nohp}
-                                onChange={this.handleNohp}
+                                onChangeText={this.handleNohp}
                                 placeholder="Nomor Ponsel"
                                 keyboardType="number-pad"
-                                underlineColorAndroid="black"
+                                underlineColorAndroid="white"
                                 maxLength={12}
-                                style={{width:normalize(280)}}
+                                style={{width:normalize(280), color:'white'}}
                             />
                             <TextInput
                                 value={this.state.password}
-                                onChange={this.handlePassword}
+                                onChangeText={this.handlePassword}
                                 placeholder="Password"
                                 secureTextEntry={true}
-                                underlineColorAndroid="black"
-                                style={{width:normalize(280)}}
+                                underlineColorAndroid="white"
+                                style={{width:normalize(280), color:'white'}}
                             />
 
-                            <Button full warning style={{backgroundColor:'#55BF3B', height:normalize(40), borderRadius:10}}>
+                            <Button full warning style={{backgroundColor:'#55BF3B', height:normalize(40), borderRadius:10}} onPress={this.handleSubmit}>
                                 <Text style={{ color: 'white', fontFamily: 'RedHatDisplay-Regular', fontSize: normalize(20), fontWeight: 'bold' }}>DAFTAR</Text>
                             </Button>
                         </View>

@@ -35,8 +35,8 @@ export default class Login extends Component {
                             value={this.state.email}
                             onChange={this.handleEmail}
                             placeholder="Email"
-                            underlineColorAndroid="black"
-                            style={{ width: normalize(250) }}
+                            underlineColorAndroid="white"
+                            style={{ width: normalize(250), color:'white' }}
                         />
                         <View style={{flexDirection:'row'}}>
                             <TextInput
@@ -44,8 +44,8 @@ export default class Login extends Component {
                                 onChange={this.handlePassword}
                                 placeholder="Password"
                                 secureTextEntry={true}
-                                underlineColorAndroid="black"
-                                style={{ width: normalize(250) }}
+                                underlineColorAndroid="white"
+                                style={{ width: normalize(250), color:'white' }}
                             />
                         </View>
                     </View>

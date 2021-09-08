@@ -4,6 +4,7 @@ import normalize from 'react-native-normalize';
 import { bandung, bannerpromo, bogor, depok, jakarta, jogja, logo, surabaya } from '../assets';
 import {SliderBox} from 'react-native-image-slider-box';
 
+
 export default class Home extends Component{
     constructor(props){
         super(props);
@@ -16,28 +17,28 @@ export default class Home extends Component{
         }
     }
 
-    backAction = () => {
-        Alert.alert("Yakin mau keluar ?","?" [
-            {
-                text:"Tidak",
-                onPress: () => null,
-                style:'cancel'
-            },
-            {
-                text:"Ya",
-                onPress: () => BackHandler.exitApp()
-            }
-        ]);
-        return true;
-    };
-
     componentDidMount(){
-        BackHandler.addEventListener("hardwareBackPress", this.backAction);
-    };
+        const backAction = () => {
+            Alert.alert("Tunggu Dulu", "Kamu Yakin Mau Keluar ?", [
+                {
+                    text:"Tidak",
+                    onPress: () => null,
+                    style:'cancel'
+                },
+                {
+                    text:"Ya",
+                    onPress: () => BackHandler.exitApp()
+                }
+            ]);
+            return true;
+        }
 
-    componentWillMount(){
-        BackHandler.removeEventListener("hardwareBackPress", this.backAction)
-    }
+        const backHandler = BackHandler.addEventListener
+        ("hardwareBackPress", backAction);
+
+        return () => backHandler.remove();
+
+    };
 
     render(){
         const navigate = this.props;
