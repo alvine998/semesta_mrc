@@ -1,6 +1,9 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 import { Body, Button, CheckBox, Header, Icon, Left, ListItem } from 'native-base';
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import DatePicker from 'react-native-datepicker';
 import normalize from 'react-native-normalize';
 
 export default class Jakarta extends Component{
@@ -13,34 +16,77 @@ export default class Jakarta extends Component{
             email:'',
             nohp:'',
             keluhan:'',
+            values:'',
+            collection:[],
+            date:''
         };
     }
+
+    getData = async () => {
+        await AsyncStorage.getItem('emailkey')
+        .then(
+            (values, collection) => {
+                console.log(values);
+                this.setState({email: values})
+                axios.get(`http://10.0.2.2:3000/users/${values}`)
+                .then(
+                    res => {
+                        collection = res.data;
+                        console.log(collection);
+                        this.setState({collection});
+                    }
+                ) .catch(err => {
+                    console.log(err)
+                })
+            }
+        )
+    }
+
+    componentDidMount(){
+        this.getData();
+    }
+
+    setDataBooking = async () => {
+        try{
+            await AsyncStorage.setItem('dataBooking', [
+                this.state.collection,
+                this.state.alamat,
+                this.state.keluhan,
+                this.state.date
+            ])
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    
 
     handleAlamat(event){
         this.setState({alamat: event})
     }
 
     handleEmail(event){
-        this.setState({email: event})
+        this.setState({collection: event})
     }
     handleNohp(event){
-        this.setState({nohp: event})
+        this.setState({collection: event})
     }
     handleKeluhan(event){
         this.setState({keluhan: event})
     }
 
     handleNama(event){
-        this.setState({nama: event})
+        this.setState({collection: event})
     }
 
     render(){
+        const {collection} = this.state;
         return(
             <View style={{backgroundColor:'#A746A3', height:'100%'}}>
                 <Header transparent style={{backgroundColor:'#93108D', height:normalize(100), borderBottomRightRadius:50}}>
                 <Left>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
-                        <Icon type={"FontAwesome5"} name="chevron-left" />
+                        <Icon type={"FontAwesome5"} name="chevron-left" style={{color:'white'}}/>
                     </TouchableOpacity>
                 </Left>
                 <Body>
@@ -61,6 +107,7 @@ export default class Jakarta extends Component{
                                     <Text style={styles.text2}>Nama Lengkap</Text>
                                     <View style={styles.border1}>
                                         <TextInput
+                                        value={collection.nama}
                                         onChangeText={this.handleNama.bind(this)}
                                             style={{padding:normalize(5), paddingLeft:normalize(20)}}
                                         />
@@ -71,6 +118,7 @@ export default class Jakarta extends Component{
                                     <Text style={styles.text2}>Alamat</Text>
                                     <View style={styles.border2}>
                                         <TextInput
+                                            value={this.state.alamat}
                                             onChangeText={this.handleAlamat.bind(this)}
                                             multiline={true}
                                             numberOfLines={4}
@@ -83,7 +131,8 @@ export default class Jakarta extends Component{
                                     <Text style={styles.text2}>Email</Text>
                                     <View style={styles.border1}>
                                         <TextInput
-                                        onChangeText={this.handleEmail.bind(this)}
+                                            value={collection.email}
+                                            onChangeText={this.handleEmail.bind(this)}
                                             style={{padding:normalize(5), paddingLeft:normalize(20)}}
                                         />
                                     </View>
@@ -93,6 +142,7 @@ export default class Jakarta extends Component{
                                     <Text style={styles.text2}>Nomor Ponsel</Text>
                                     <View style={styles.border1}>
                                         <TextInput
+                                            value={collection.nohp}
                                             onChangeText={this.handleNohp.bind(this)}
                                             maxLength={12}
                                             style={{padding:normalize(5), paddingLeft:normalize(20)}}
@@ -104,6 +154,7 @@ export default class Jakarta extends Component{
                                     <Text style={styles.text2}>Keluhan</Text>
                                     <View style={styles.border2}>
                                         <TextInput
+                                            value={this.state.keluhan}
                                             onChangeText={this.handleKeluhan.bind(this)}
                                             multiline={true}
                                             numberOfLines={4}
@@ -117,6 +168,39 @@ export default class Jakarta extends Component{
                                     <View style={{paddingLeft:normalize(20)}}/>
                                     <Text style={styles.text3}>Butuh saat ini juga</Text>
                                 </View>
+
+                                {this.state.checkeds ? 
+                                    <View/>
+                                    :
+                                    <View style={styles.border2}>
+                                        <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                                            <Text style={styles.text5}>Tanggal :</Text>
+                                            <DatePicker
+                                                style={{width:normalize(180), marginTop:normalize(10)}}
+                                                customStyles={{dateText:{
+                                                    color:'black'
+                                                }, dateInput:{
+                                                    height:normalize(40),
+                                                    borderColor:'#fff',
+                                                }, placeholderText:{
+                                                    color:'black'
+                                                }
+                                                }}
+                                                date={this.state.date}
+                                                mode="date"
+                                                placeholder="Pilih Tanggal"
+                                                format="DD-MM-YYYY"
+                                                minDate="01-05-2016"
+                                                confirmBtnText="Confirm"
+                                                cancelBtnText="Cancel"
+                                                onDateChange={(date) => {this.setState({date: date})}}
+                                                showIcon={false}
+                                                
+                                            />
+                                        </View>
+                                    </View>
+                                }
+                                
 
                                 <View style={{paddingTop:normalize(20)}}>
                                     <Button onPress={() => this.props.navigation.navigate('Booking')} full style={{borderRadius:10, height:normalize(40), backgroundColor:'#55BF3B'}}>
@@ -163,6 +247,12 @@ const styles = StyleSheet.create({
         fontWeight:'bold', 
         fontSize:normalize(20)
     },
+    text5:{
+        fontFamily:'RedHatDisplay-Regular', 
+        color:'black', 
+        fontSize:normalize(20),
+        paddingTop:normalize(10)
+    },
     border1:{
         backgroundColor:'white',
         width:normalize(300),
@@ -179,7 +269,7 @@ const styles = StyleSheet.create({
     },
     theme2:{
         backgroundColor:'#93108D',
-        height:normalize(780),
+        height:normalize(920),
         borderRadius:20,
         padding:normalize(20)
     },

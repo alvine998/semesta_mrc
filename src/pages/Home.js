@@ -3,6 +3,8 @@ import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert, Bac
 import normalize from 'react-native-normalize';
 import { bandung, bannerpromo, bogor, depok, jakarta, jogja, logo, surabaya } from '../assets';
 import {SliderBox} from 'react-native-image-slider-box';
+import { Button } from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 export default class Home extends Component{
@@ -13,11 +15,39 @@ export default class Home extends Component{
                 "http://semestabertasbihgroup.com/wp-content/uploads/2021/06/8-1024x576.png",
                 "http://semestabertasbihgroup.com/wp-content/uploads/2021/06/1-1024x576.png",
                 "http://semestabertasbihgroup.com/wp-content/uploads/2021/06/3-1024x576.png"
-            ]
+            ],
+            valMail:'',
+            values:''
         }
     }
 
+    getDataEmail = async () => {
+        await AsyncStorage.getItem('emailkey')
+        .then(
+            (values) => {
+                console.log(values);
+                this.setState({valMail:values});
+                console.log(this.state.valMail)
+            }
+        )
+    }
+
+    alertNullLogin(){
+        Alert.alert("Kamu Belum Login", "Yuk Login Dulu", [
+            {
+                text:"Tidak",
+                onPress: () => null,
+                style:'cancel'
+            },
+            {
+                text:"Ya",
+                onPress: () => this.props.navigation.navigate('Login')
+            }
+        ]);
+    }
+
     componentDidMount(){
+        this.getDataEmail();
         const backAction = () => {
             Alert.alert("Tunggu Dulu", "Kamu Yakin Mau Keluar ?", [
                 {
@@ -40,6 +70,12 @@ export default class Home extends Component{
 
     };
 
+    onLogout = async () => {
+        await AsyncStorage.clear();
+        this.props.navigation.push('Home')
+        Alert.alert('Anda telah logout')
+    }
+
     render(){
         const navigate = this.props;
         return(
@@ -54,6 +90,7 @@ export default class Home extends Component{
                     <View style={{paddingTop:normalize(50)}}>
                         <SliderBox autoplay circleLoop images={this.state.images}/>
                     </View>
+
                     {/* Area Terapi MRC */}
                     <View style={styles.position2}>
                         <View style={styles.theme2}>
@@ -61,21 +98,21 @@ export default class Home extends Component{
                                 <Text style={styles.text1}>MAU TERAPI DIMANA ?</Text> 
                             </View>
                             <View style={styles.position3}>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Jakarta')}>
+                                <TouchableOpacity onPress={() => { this.state.valMail == null ? this.alertNullLogin() : this.props.navigation.navigate('Jakarta')}}>
                                     <View style={styles.square1}>
                                         <Image source={jakarta} style={{width:normalize(60), height:normalize(80)}} />   
                                     </View>
                                     <Text style={styles.text2}>JAKARTA</Text> 
                                 </TouchableOpacity>
                                 <View style={{paddingRight:normalize(20)}} />
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Bogor')}>
+                                <TouchableOpacity onPress={() => { this.state.valMail == null ? this.alertNullLogin() : this.props.navigation.navigate('Bogor')}}>
                                     <View style={styles.square1}>
                                         <Image source={bogor} style={{width:normalize(60), height:normalize(80)}} />   
                                     </View>
                                     <Text style={styles.text2}>BOGOR</Text> 
                                 </TouchableOpacity>
                                 <View style={{paddingRight:normalize(20)}} />
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Depok')}>
+                                <TouchableOpacity onPress={() => { this.state.valMail == null ? this.alertNullLogin() : this.props.navigation.navigate('Depok')}}>
                                     <View style={styles.square1}>
                                         <Image source={depok} style={{width:normalize(60), height:normalize(80)}} />   
                                     </View>
@@ -83,7 +120,7 @@ export default class Home extends Component{
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.position4}>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Bekasi')}>
+                                <TouchableOpacity onPress={() => { this.state.valMail == null ? this.alertNullLogin() : this.props.navigation.navigate('Bekasi')}}>
                                     <View style={styles.square1}>
                                         <Image source={jogja} style={{width:normalize(60), height:normalize(80)}} />   
                                     </View>
@@ -113,12 +150,30 @@ export default class Home extends Component{
                                 <Image source={bannerpromo} style={{width:normalize(300), height:normalize(185)}} />
                             </View>
                         </View>
+
+                        { this.state.valMail == null ?
+                            <View/> :
+                            <View style={{paddingLeft:normalize(20), paddingTop:normalize(20), paddingRight:normalize(20)}}>
+                                <Button onPress={() => this.onLogout()} full warning style={{borderRadius:10, height:normalize(40)}}>
+                                    <Text>Keluar</Text>
+                                </Button>
+                            </View>
+                        }
+                        
                     </View>
                     {/* copyright */}
                     <View>
                         <Text style={{textAlign:'center', color:'white', fontSize:normalize(12)}}>Copyright Semesta Group Bertasbih 2021</Text>
                     </View>
                 </ScrollView>
+                {/* Login */}
+                {this.state.valMail == null ?
+                    <View style={{paddingLeft:normalize(50), paddingTop:normalize(10),paddingBottom:normalize(10), paddingRight:normalize(50)}}>
+                        <Button onPress={() => this.props.navigation.navigate('Login')} full primary style={{borderRadius:10, height:normalize(40)}}>
+                            <Text style={{color:'white'}}>Login</Text>
+                        </Button>
+                    </View> : <View/>
+                }
             </View>
         )
     }

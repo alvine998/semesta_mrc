@@ -17,7 +17,7 @@ export default class Bogor extends Component{
                 <Header transparent style={{backgroundColor:'#93108D', height:normalize(100), borderBottomRightRadius:50}}>
                 <Left>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
-                        <Icon type={"FontAwesome5"} name="chevron-left" />
+                        <Icon type={"FontAwesome5"} name="chevron-left" style={{color:'white'}} />
                     </TouchableOpacity>
                 </Left>
                 <Body>

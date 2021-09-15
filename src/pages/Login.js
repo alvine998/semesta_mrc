@@ -47,6 +47,7 @@ export default class Login extends Component {
             Alert.alert("Login Sukses")
             this.setData();
             this.props.navigation.navigate('Home')
+            this.setState({email:'', password:''})
             }
         )
     }
@@ -56,7 +57,7 @@ export default class Login extends Component {
         return (
             <View style={{ backgroundColor: '#A746A3', height: '100%' }}>
                 <ScrollView style={{ paddingLeft: normalize(20), paddingRight: normalize(20) }}>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: normalize(50) }}>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: normalize(10) }}>
                         <Image source={logo} style={{ width: normalize(300), height: normalize(250) }} />
                         <TextInput
                             value={this.state.email}
