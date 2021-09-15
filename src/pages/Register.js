@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Body, Button, Header, Icon, Left } from 'native-base';
 import React, { Component } from 'react'
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
 
 export default class Register extends Component{
@@ -20,46 +20,36 @@ export default class Register extends Component{
         this.handlePassword = this.handlePassword.bind(this);
     }
 
-    handleEmail(e) {
-        this.setState({ email: e })
+    handleEmail(event) {
+        this.setState({ email: event })
     }
 
-    handleNama(e) {
-        this.setState({ nama: e })
+    handleNama(event) {
+        this.setState({ nama: event })
     }
 
-    handleNohp(e) {
-        this.setState({ nohp: e })
+    handleNohp(event) {
+        this.setState({ nohp: event })
     }
 
-    handlePassword(e) {
-        this.setState({ password: e })
+    handlePassword(event) {
+        this.setState({ password: event })
     }
 
-    componentDidMount(){
-        axios.get("https://182.253.124.66:3000/users")
-            .then( res => {
-                const collection = res.data
-                console.log(collection);
-                this.setState({collection})
-            })
-            .catch(err => {
-                console.log("API Error: " , err.message);
-            });
-    }
 
     handleSubmit () {
         const user = {
-            nama: 'this.state.nama',
-            email: 'this.state.email',
-            nohp: 'this.state.nohp',
-            password: 'this.state.password'
+            nama: this.state.nama,
+            email: this.state.email,
+            nohp: this.state.nohp,
+            password: this.state.password
         }
-
-        axios.post(`https://182.253.124.66:3000/users`, {user})
+        console.log("hello", user)
+        axios.post(`http://10.0.2.2:3000/users`, user)
             .then(res => {
-                console.log(res);
                 console.log(res.data);
+                Alert.alert("Berhasil Daftar")
+                this.setState({nama:'', email:'', nohp:'', password:''})
                 this.props.navigation.navigate("Login")
             })
             .catch(err => {
@@ -124,7 +114,7 @@ export default class Register extends Component{
                                 style={{width:normalize(280), color:'white'}}
                             />
 
-                            <Button full warning style={{backgroundColor:'#55BF3B', height:normalize(40), borderRadius:10}} onPress={this.handleSubmit}>
+                            <Button full warning style={{backgroundColor:'#55BF3B', height:normalize(40), borderRadius:10}} onPress={() => this.handleSubmit()}>
                                 <Text style={{ color: 'white', fontFamily: 'RedHatDisplay-Regular', fontSize: normalize(20), fontWeight: 'bold' }}>DAFTAR</Text>
                             </Button>
                         </View>

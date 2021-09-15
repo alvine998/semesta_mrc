@@ -83,18 +83,18 @@ export default class Home extends Component{
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.position4}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Bekasi')}>
+                                    <View style={styles.square1}>
+                                        <Image source={jogja} style={{width:normalize(60), height:normalize(80)}} />   
+                                    </View>
+                                    <Text style={styles.text2}>BEKASI</Text> 
+                                </TouchableOpacity>
+                                <View style={{paddingRight:normalize(20)}} />
                                 <TouchableOpacity onPress={() => Alert.alert("Belum Tersedia Di Bandung")}>
                                     <View style={styles.square1}>
                                         <Image source={bandung} style={{width:normalize(60), height:normalize(80)}} />   
                                     </View>
                                     <Text style={styles.text2}>BANDUNG</Text> 
-                                </TouchableOpacity>
-                                <View style={{paddingRight:normalize(20)}} />
-                                <TouchableOpacity onPress={() => Alert.alert("Belum Tersedia Di Jogja")}>
-                                    <View style={styles.square1}>
-                                        <Image source={jogja} style={{width:normalize(60), height:normalize(80)}} />   
-                                    </View>
-                                    <Text style={styles.text2}>JOGJA</Text> 
                                 </TouchableOpacity>
                                 <View style={{paddingRight:normalize(20)}} />
                                 <TouchableOpacity onPress={() => Alert.alert("Belum Tersedia Di Surabaya")}>

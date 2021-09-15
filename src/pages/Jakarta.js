@@ -1,4 +1,4 @@
-import { Body, Header, Icon, Left } from 'native-base';
+import { Body, Button, CheckBox, Header, Icon, Left, ListItem } from 'native-base';
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
@@ -7,8 +7,31 @@ export default class Jakarta extends Component{
     constructor(props){
         super(props);
         this.state={
-
+            checkeds:false,
+            nama:'',
+            alamat:'',
+            email:'',
+            nohp:'',
+            keluhan:'',
         };
+    }
+
+    handleAlamat(event){
+        this.setState({alamat: event})
+    }
+
+    handleEmail(event){
+        this.setState({email: event})
+    }
+    handleNohp(event){
+        this.setState({nohp: event})
+    }
+    handleKeluhan(event){
+        this.setState({keluhan: event})
+    }
+
+    handleNama(event){
+        this.setState({nama: event})
     }
 
     render(){
@@ -38,6 +61,7 @@ export default class Jakarta extends Component{
                                     <Text style={styles.text2}>Nama Lengkap</Text>
                                     <View style={styles.border1}>
                                         <TextInput
+                                        onChangeText={this.handleNama.bind(this)}
                                             style={{padding:normalize(5), paddingLeft:normalize(20)}}
                                         />
                                     </View>
@@ -47,11 +71,57 @@ export default class Jakarta extends Component{
                                     <Text style={styles.text2}>Alamat</Text>
                                     <View style={styles.border2}>
                                         <TextInput
+                                            onChangeText={this.handleAlamat.bind(this)}
                                             multiline={true}
                                             numberOfLines={4}
                                             style={{padding:normalize(5), paddingLeft:normalize(20)}}
                                         />
                                     </View>
+                                </View>
+
+                                <View style={{paddingTop:normalize(15)}}>
+                                    <Text style={styles.text2}>Email</Text>
+                                    <View style={styles.border1}>
+                                        <TextInput
+                                        onChangeText={this.handleEmail.bind(this)}
+                                            style={{padding:normalize(5), paddingLeft:normalize(20)}}
+                                        />
+                                    </View>
+                                </View>
+
+                                <View style={{paddingTop:normalize(15)}}>
+                                    <Text style={styles.text2}>Nomor Ponsel</Text>
+                                    <View style={styles.border1}>
+                                        <TextInput
+                                            onChangeText={this.handleNohp.bind(this)}
+                                            maxLength={12}
+                                            style={{padding:normalize(5), paddingLeft:normalize(20)}}
+                                        />
+                                    </View>
+                                </View>
+
+                                <View style={{paddingTop:normalize(15)}}>
+                                    <Text style={styles.text2}>Keluhan</Text>
+                                    <View style={styles.border2}>
+                                        <TextInput
+                                            onChangeText={this.handleKeluhan.bind(this)}
+                                            multiline={true}
+                                            numberOfLines={4}
+                                            style={{padding:normalize(5), paddingLeft:normalize(20)}}
+                                        />
+                                    </View>
+                                </View>
+
+                                <View style={{flexDirection:'row', paddingTop:normalize(20)}}>
+                                    <CheckBox color="#A746A3" style={{fontSize:normalize(24)}} checked={this.state.checkeds ? true : false} onPress={() => this.setState({checkeds: !this.state.checkeds})} />
+                                    <View style={{paddingLeft:normalize(20)}}/>
+                                    <Text style={styles.text3}>Butuh saat ini juga</Text>
+                                </View>
+
+                                <View style={{paddingTop:normalize(20)}}>
+                                    <Button onPress={() => this.props.navigation.navigate('Booking')} full style={{borderRadius:10, height:normalize(40), backgroundColor:'#55BF3B'}}>
+                                        <Text style={styles.text4}>Selanjutnya</Text>
+                                    </Button>
                                 </View>
                             </View>
                         </View>
@@ -81,6 +151,18 @@ const styles = StyleSheet.create({
         fontWeight:'100', 
         fontSize:normalize(22)
     },
+    text3:{
+        fontFamily:'RedHatDisplay-Regular', 
+        color:'white', 
+        fontWeight:'100', 
+        fontSize:normalize(18)
+    },
+    text4:{
+        fontFamily:'RedHatDisplay-Regular', 
+        color:'white', 
+        fontWeight:'bold', 
+        fontSize:normalize(20)
+    },
     border1:{
         backgroundColor:'white',
         width:normalize(300),
@@ -91,14 +173,14 @@ const styles = StyleSheet.create({
     border2:{
         backgroundColor:'white',
         width:normalize(300),
-        height:normalize(100),
+        height:normalize(150),
         borderRadius:10,
         marginTop:normalize(10)
     },
     theme2:{
         backgroundColor:'#93108D',
-        height:normalize(500),
+        height:normalize(780),
         borderRadius:20,
-        padding:normalize(15)
+        padding:normalize(20)
     },
 })

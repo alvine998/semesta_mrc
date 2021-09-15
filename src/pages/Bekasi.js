@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
 
-export default class Depok extends Component{
+export default class Bekasi extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -21,7 +21,7 @@ export default class Depok extends Component{
                     </TouchableOpacity>
                 </Left>
                 <Body>
-                    <Text style={{fontFamily:'RedHatDisplay-Regular', color:'white', fontWeight:'100', fontSize:normalize(24)}}>Area Depok</Text>
+                    <Text style={{fontFamily:'RedHatDisplay-Regular', color:'white', fontWeight:'100', fontSize:normalize(24)}}>Area Bekasi</Text>
                 </Body>
                 </Header>
                 <ScrollView style={{paddingLeft:normalize(20), paddingRight:normalize(20)}}>
@@ -29,7 +29,7 @@ export default class Depok extends Component{
                         <View style={styles.theme1}>
                             <Text style={styles.text1}>
                             Data ini akan diteruskan kepada MRC yang berada
-                            di wilayah Depok
+                            di wilayah Bekasi
                             </Text>
                         </View>
                         <View style={{paddingTop:normalize(25)}}>

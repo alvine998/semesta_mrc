@@ -1,7 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { Component } from 'react'
+import Bekasi from './src/pages/Bekasi';
 import Bogor from './src/pages/Bogor';
+import Booking from './src/pages/Booking';
 import Depok from './src/pages/Depok';
 import Home from './src/pages/Home';
 import Jakarta from './src/pages/Jakarta';
@@ -24,6 +26,9 @@ export default class App extends Component{
           <Stack.Screen name="Jakarta" component={Jakarta}/>
           <Stack.Screen name="Bogor" component={Bogor}/>
           <Stack.Screen name="Depok" component={Depok}/>
+          <Stack.Screen name="Bekasi" component={Bekasi}/>
+          {/* Booking */}
+          <Stack.Screen name="Booking" component={Booking}/>
         </Stack.Navigator>
       </NavigationContainer>
     )

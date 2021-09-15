@@ -1,6 +1,8 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 import { Button, Icon } from 'native-base';
 import React, { Component } from 'react'
-import { Image, Text, TextInput, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, Text, TextInput, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import normalize from 'react-native-normalize';
 import { logo } from '../assets';
 
@@ -24,6 +26,31 @@ export default class Login extends Component {
         this.setState({ password: e })
     }
 
+    setData = async () => {
+        try {
+            await AsyncStorage.setItem('emailkey', this.state.email)
+        }
+        catch(err){ 
+            console.log(err)
+        }
+    }
+
+    onLogin(){
+        const authYes = {
+            email: this.state.email,
+            password: this.state.password
+        }
+
+        axios.post('http://10.0.2.2:3000/userss/login', authYes)
+        .then( res => {
+            console.log(res.data)
+            Alert.alert("Login Sukses")
+            this.setData();
+            this.props.navigation.navigate('Home')
+            }
+        )
+    }
+
     render() {
         const navigate = this.props;
         return (
@@ -33,7 +60,7 @@ export default class Login extends Component {
                         <Image source={logo} style={{ width: normalize(300), height: normalize(250) }} />
                         <TextInput
                             value={this.state.email}
-                            onChange={this.handleEmail}
+                            onChangeText={this.handleEmail}
                             placeholder="Email"
                             underlineColorAndroid="white"
                             style={{ width: normalize(250), color:'white' }}
@@ -41,7 +68,7 @@ export default class Login extends Component {
                         <View style={{flexDirection:'row'}}>
                             <TextInput
                                 value={this.state.password}
-                                onChange={this.handlePassword}
+                                onChangeText={this.handlePassword}
                                 placeholder="Password"
                                 secureTextEntry={true}
                                 underlineColorAndroid="white"
@@ -50,7 +77,7 @@ export default class Login extends Component {
                         </View>
                     </View>
                     <View style={{ paddingLeft: normalize(50), paddingRight: normalize(50), paddingTop: normalize(10) }}>
-                        <Button full warning style={{ backgroundColor: '#93108D', borderRadius: 10, height: normalize(40) }}>
+                        <Button full warning style={{ backgroundColor: '#93108D', borderRadius: 10, height: normalize(40) }} onPress={() => this.onLogin()}>
                             <Text style={{ color: 'white', fontFamily: 'RedHatDisplay-Regular', fontSize: normalize(20), fontWeight: 'bold' }}>LOGIN</Text>
                         </Button>
                         <View style={{alignItems:'center', justifyContent:'center', paddingTop:normalize(10)}}>
