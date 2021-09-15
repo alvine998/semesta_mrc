@@ -18,7 +18,11 @@ export default class Jakarta extends Component{
             keluhan:'',
             values:'',
             collection:[],
-            date:''
+            date:'',
+            hour:'',
+            hour2:'',
+            minute:'',
+            minute2:''
         };
     }
 
@@ -78,6 +82,27 @@ export default class Jakarta extends Component{
 
     handleNama(event){
         this.setState({collection: event})
+    }
+
+    handleNumber(event){
+        this.setState({hour2: event.replace(/[^0-4]/g, '')})
+    }
+
+    handleNumber2(event){
+        this.setState({hour2: event.replace(/[^0-9]/g, '')})
+    }
+
+    handleNumber3(event){
+        this.setState({hour: event.replace(/[^0-1]/g, '')})
+    }
+
+    handleNumber4(event){
+        this.setState({hour: event.replace(/[^0-2]/g, '')})
+    }
+
+    handleHour(event){
+        
+        
     }
 
     render(){
@@ -181,7 +206,7 @@ export default class Jakarta extends Component{
                                                 customStyles={{dateText:{
                                                     color:'black'
                                                 }, dateInput:{
-                                                    height:normalize(40),
+                                                    height:normalize(35),
                                                     borderColor:'#fff',
                                                 }, placeholderText:{
                                                     color:'black'
@@ -198,6 +223,54 @@ export default class Jakarta extends Component{
                                                 showIcon={false}
                                                 
                                             />
+                                        </View>
+
+                                        <View style={{flexDirection:'row', paddingLeft:normalize(30)}}>
+                                            <Text style={[styles.text5, {paddingTop:normalize(20)}]}>Waktu :</Text>
+                                            <View style={{flexDirection:'row', paddingLeft:normalize(50)}}>
+                                                <TextInput
+                                                    placeholder="0"
+                                                    style={{color:'black', textAlign:'center'}}
+                                                    placeholderTextColor="black"
+                                                    underlineColorAndroid="black"
+                                                    maxLength={1}
+                                                    keyboardType="numeric"
+                                                    value={this.state.hour}
+                                                    onChangeText={(event) => this.setState({hour: event.replace(/[^0-2]/g, '')})}
+                                                />
+                                                <TextInput
+                                                    placeholder="0"
+                                                    style={{color:'black', textAlign:'center'}}
+                                                    placeholderTextColor="black"
+                                                    underlineColorAndroid="black"
+                                                    maxLength={1}
+                                                    keyboardType="numeric"
+                                                    value={this.state.hour2}
+                                                    onChangeText={this.state.hour == 2 ? 
+                                                        this.handleNumber.bind(this) : this.handleNumber2.bind(this)}
+                                                />
+                                                <Text style={[styles.text5, {marginTop:normalize(8)}]}> : </Text>
+                                                <TextInput
+                                                    placeholder="0"
+                                                    style={{color:'black', textAlign:'center'}}
+                                                    placeholderTextColor="black"
+                                                    underlineColorAndroid="black"
+                                                    maxLength={1}
+                                                    keyboardType="numeric"
+                                                    value={this.state.minute}
+                                                    onChangeText={(event) => this.setState({minute: event.replace(/[^0-6]/g, '')})}
+                                                />
+                                                <TextInput
+                                                    placeholder="0"
+                                                    style={{color:'black', textAlign:'center'}}
+                                                    placeholderTextColor="black"
+                                                    underlineColorAndroid="black"
+                                                    maxLength={1}
+                                                    keyboardType="numeric"
+                                                    value={this.state.minute2}
+                                                    onChangeText={(event) => this.setState({minute2: event.replace(/[^0-9]/g, '')})}
+                                                />
+                                            </View>
                                         </View>
                                     </View>
                                 }
@@ -274,4 +347,5 @@ const styles = StyleSheet.create({
         borderRadius:20,
         padding:normalize(20)
     },
+    
 })
