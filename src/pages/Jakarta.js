@@ -47,13 +47,14 @@ export default class Jakarta extends Component{
     }
 
     setDataBooking = async () => {
+        const dataBook = {
+            alamat: this.state.alamat,
+            keluhan: this.state.keluhan,
+            collection: this.state.collection,
+            tanggal: this.state.date
+        }
         try{
-            await AsyncStorage.setItem('dataBooking', [
-                this.state.collection,
-                this.state.alamat,
-                this.state.keluhan,
-                this.state.date
-            ])
+            await AsyncStorage.setItem('dataBooking', JSON.stringify(dataBook))
         }
         catch(err){
             console.log(err);
@@ -85,7 +86,7 @@ export default class Jakarta extends Component{
             <View style={{backgroundColor:'#A746A3', height:'100%'}}>
                 <Header transparent style={{backgroundColor:'#93108D', height:normalize(100), borderBottomRightRadius:50}}>
                 <Left>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Jakarta')}>
                         <Icon type={"FontAwesome5"} name="chevron-left" style={{color:'white'}}/>
                     </TouchableOpacity>
                 </Left>
@@ -203,7 +204,7 @@ export default class Jakarta extends Component{
                                 
 
                                 <View style={{paddingTop:normalize(20)}}>
-                                    <Button onPress={() => this.props.navigation.navigate('Booking')} full style={{borderRadius:10, height:normalize(40), backgroundColor:'#55BF3B'}}>
+                                    <Button onPress={() => {this.setDataBooking();this.props.navigation.navigate('Payment')}} full style={{borderRadius:10, height:normalize(40), backgroundColor:'#55BF3B'}}>
                                         <Text style={styles.text4}>Selanjutnya</Text>
                                     </Button>
                                 </View>

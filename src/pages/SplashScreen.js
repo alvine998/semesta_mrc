@@ -25,12 +25,12 @@ export default class SplashScreen extends Component{
                     this.setState({login: false})
                     setTimeout(() => {
                         this.props.navigation.dispatch(StackActions.replace('Login'))
-                        }, 3000)
+                        }, 1500)
                 } else {
                     this.setState({login: true})
                     setTimeout(() => {
                         this.props.navigation.dispatch(StackActions.replace('Home'))
-                        }, 3000);
+                        }, 1500);
                 }
             }
         )

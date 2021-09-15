@@ -3,11 +3,11 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React, { Component } from 'react'
 import Bekasi from './src/pages/Bekasi';
 import Bogor from './src/pages/Bogor';
-import Booking from './src/pages/Booking';
 import Depok from './src/pages/Depok';
 import Home from './src/pages/Home';
 import Jakarta from './src/pages/Jakarta';
 import Login from './src/pages/Login';
+import Payment from './src/pages/Payment';
 import Register from './src/pages/Register';
 import SplashScreen from './src/pages/SplashScreen';
 
@@ -28,7 +28,7 @@ export default class App extends Component{
           <Stack.Screen name="Depok" component={Depok}/>
           <Stack.Screen name="Bekasi" component={Bekasi}/>
           {/* Booking */}
-          <Stack.Screen name="Booking" component={Booking}/>
+          <Stack.Screen name="Payment" component={Payment}/>
         </Stack.Navigator>
       </NavigationContainer>
     )
