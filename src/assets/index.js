@@ -9,10 +9,13 @@ import bogor from './icons/bogor.png';
 import depok from './icons/depok.png';
 import surabaya from './icons/surabaya.png';
 import bannerpromo from './images/bannerpromo.jpg';
-
+import bca from './icons/bca.png';
+import waiting from './images/waitt.png';
 
 export {
     logo,
+    waiting,
+    bca,
     banner1,
     banner2,
     banner3,

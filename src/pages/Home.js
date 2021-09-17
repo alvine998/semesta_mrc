@@ -41,7 +41,7 @@ export default class Home extends Component{
             },
             {
                 text:"Ya",
-                onPress: () => this.props.navigation.navigate('Login')
+                onPress: () => this.props.navigation.push('Login')
             }
         ]);
     }
@@ -71,8 +71,9 @@ export default class Home extends Component{
     };
 
     onLogout = async () => {
-        await AsyncStorage.clear();
-        this.props.navigation.push('Home')
+        await AsyncStorage.removeItem('emailkey');
+        this.props.navigation.push('Login')
+        console.log('Done')
         Alert.alert('Anda telah logout')
     }
 

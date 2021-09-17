@@ -46,7 +46,7 @@ export default class Login extends Component {
             console.log(res.data)
             Alert.alert("Login Sukses")
             this.setData();
-            this.props.navigation.navigate('Home')
+            this.props.navigation.push('Home')
             this.setState({email:'', password:''})
             }
         )
@@ -91,7 +91,7 @@ export default class Login extends Component {
                     </View>
 
                     <View style={{alignItems:'center', justifyContent:'center', paddingTop:normalize(20)}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
+                        <TouchableOpacity onPress={() => this.props.navigation.push('Home')}>
                             <Text style={{ color: 'white', fontFamily: 'RedHatDisplay-Regular', fontSize: normalize(20), fontWeight:'bold' }}>Lewati</Text>
                         </TouchableOpacity>
                     </View>

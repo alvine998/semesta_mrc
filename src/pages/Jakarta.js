@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import { Body, Button, CheckBox, Header, Icon, Left, ListItem } from 'native-base';
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import normalize from 'react-native-normalize';
 
@@ -55,13 +55,41 @@ export default class Jakarta extends Component{
             alamat: this.state.alamat,
             keluhan: this.state.keluhan,
             collection: this.state.collection,
-            tanggal: this.state.date
+            tanggal: this.state.date,
+            hour: this.state.hour,
+            hour2: this.state.hour2,
+            minute: this.state.minute,
+            minute2: this.state.minute2
         }
         try{
             await AsyncStorage.setItem('dataBooking', JSON.stringify(dataBook))
         }
         catch(err){
             console.log(err);
+        }
+    }
+    
+    onNext(){
+        if(!this.state.collection.nama){
+            Alert.alert("Harap isi bagian nama")
+        }
+        else if(!this.state.collection.email){
+            Alert.alert("Harap isi bagian email")
+        }
+        else if(!this.state.collection.nohp){
+            Alert.alert("Harap isi bagian nomor ponsel")
+        }
+        else if(!this.state.keluhan){
+            Alert.alert("Harap isi bagian keluhan")
+        }
+        else if(!this.state.alamat){
+            Alert.alert("Harap isi bagian alamat")
+        }
+        else if(this.state.checkeds){
+            this.props.navigation.navigate('BuktiPembayaran')
+        }
+        else {
+            this.props.navigation.navigate('Payment')
         }
     }
     
@@ -85,7 +113,7 @@ export default class Jakarta extends Component{
     }
 
     handleNumber(event){
-        this.setState({hour2: event.replace(/[^0-4]/g, '')})
+        this.setState({hour2: event.replace(/[^0]/g, '')})
     }
 
     handleNumber2(event){
@@ -111,7 +139,7 @@ export default class Jakarta extends Component{
             <View style={{backgroundColor:'#A746A3', height:'100%'}}>
                 <Header transparent style={{backgroundColor:'#93108D', height:normalize(100), borderBottomRightRadius:50}}>
                 <Left>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Jakarta')}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
                         <Icon type={"FontAwesome5"} name="chevron-left" style={{color:'white'}}/>
                     </TouchableOpacity>
                 </Left>
@@ -230,6 +258,7 @@ export default class Jakarta extends Component{
                                             <View style={{flexDirection:'row', paddingLeft:normalize(50)}}>
                                                 <TextInput
                                                     placeholder="0"
+                                                    defaultValue="0"
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
                                                     underlineColorAndroid="black"
@@ -240,6 +269,7 @@ export default class Jakarta extends Component{
                                                 />
                                                 <TextInput
                                                     placeholder="0"
+                                                    defaultValue="0"
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
                                                     underlineColorAndroid="black"
@@ -258,7 +288,7 @@ export default class Jakarta extends Component{
                                                     maxLength={1}
                                                     keyboardType="numeric"
                                                     value={this.state.minute}
-                                                    onChangeText={(event) => this.setState({minute: event.replace(/[^0-6]/g, '')})}
+                                                    onChangeText={(event) => {this.setState({minute: event.replace(/[^0-5]/g, '')})}}
                                                 />
                                                 <TextInput
                                                     placeholder="0"
@@ -277,7 +307,7 @@ export default class Jakarta extends Component{
                                 
 
                                 <View style={{paddingTop:normalize(20)}}>
-                                    <Button onPress={() => {this.setDataBooking();this.props.navigation.navigate('Payment')}} full style={{borderRadius:10, height:normalize(40), backgroundColor:'#55BF3B'}}>
+                                    <Button onPress={() => {this.setDataBooking();this.onNext()}} full style={{borderRadius:10, height:normalize(40), backgroundColor:'#55BF3B'}}>
                                         <Text style={styles.text4}>Selanjutnya</Text>
                                     </Button>
                                 </View>
