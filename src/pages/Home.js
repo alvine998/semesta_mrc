@@ -5,6 +5,7 @@ import { bandung, bannerpromo, bogor, depok, jakarta, jogja, logo, surabaya } fr
 import {SliderBox} from 'react-native-image-slider-box';
 import { Button } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 
 export default class Home extends Component{
@@ -17,17 +18,40 @@ export default class Home extends Component{
                 "http://semestabertasbihgroup.com/wp-content/uploads/2021/06/3-1024x576.png"
             ],
             valMail:'',
-            values:''
+            values:'',
+            id:'',
+            collection:[],
+            call:[]
         }
     }
 
+    // Mengambil data session email
     getDataEmail = async () => {
         await AsyncStorage.getItem('emailkey')
         .then(
-            (values) => {
+            (values, collection, call) => {
                 console.log(values);
                 this.setState({valMail:values});
                 console.log(this.state.valMail)
+                // Mengambil data user
+                axios.get(`http://10.0.2.2:3000/users/${values}`)
+                .then(
+                    res => {
+                        collection = res.data;
+                        console.log(collection._id);
+                        this.setState({collection});
+                        // Mengambil data order
+                        console.log(collection._id)
+                        axios.get(`http://10.0.2.2:3000/orders/${collection._id}`)
+                        .then(
+                            response => {
+                                call = response.data;
+                                console.log(call);
+                                this.setState({call})
+                            }
+                        )
+                    }
+                )
             }
         )
     }
@@ -77,8 +101,54 @@ export default class Home extends Component{
         Alert.alert('Anda telah logout')
     }
 
+    renderItem(){
+        if(this.state.call.userid){
+            return(
+                <View style={{paddingTop:normalize(20)}}>
+                    <View style={styles.theme2}>
+                        <Text style={styles.text1}>Reservasi Terapi</Text>
+                        <View style={{paddingTop:normalize(20)}}>
+                            {this.renderItemNull()}
+                        </View> 
+                    </View>
+                </View>
+            )
+        }
+        else {
+            return null;
+        }
+        
+    }
+
+    renderItemNull(){
+        if(this.state.call.status == 'belum verifikasi'){
+            return(
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('BuktiPembayaran')}>
+                    <View style={{width:'100%', height:normalize(40), backgroundColor:'#A746A3', borderRadius:10, paddingTop:normalize(8)}}>
+                        <Text style={{color:'white', textAlign:'center'}}>Belum Diverifikasi</Text>
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+        else if(this.state.call.status == 'sudah verifikasi') {
+            return(
+                <TouchableOpacity>
+                    <View style={{width:'100%', height:normalize(40), backgroundColor:'#A746A3', borderRadius:10, paddingTop:normalize(8)}}>
+                        <Text style={{color:'white', textAlign:'center'}}>Sudah Diverifikasi</Text>
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+        else {
+            return(
+                null
+            )
+        }
+    }
+
     render(){
         const navigate = this.props;
+        const {call, collection} = this.state;
         return(
             <View style={{backgroundColor:'#A746A3', height:'100%'}}>
                 <ScrollView>
@@ -143,6 +213,24 @@ export default class Home extends Component{
                                 </TouchableOpacity>
                             </View>
                         </View>
+
+                        {/* Order List */}
+                        {this.renderItem()}
+                     
+                            {/* <View style={{paddingTop:normalize(20)}}>
+                                <View style={styles.theme2}>
+                                    <Text style={styles.text1}>Reservasi Terapi</Text>
+                                    <View style={{paddingTop:normalize(20)}}>
+                                        {collection._id == call.userid ? 
+                                                this.renderItem()
+                                            : 
+                                            <View/> 
+                                        }
+                                    </View> 
+                                </View>
+                            </View> */}
+
+                            
 
                         {/* Spesial Promo */}
                         <View style={{paddingTop:normalize(40)}}>
