@@ -18,7 +18,8 @@ export default class Payment extends Component{
             keluhan:'',
             waktu:'',
             singleFile:[],
-            foto: null
+            foto: null,
+            status:'belum verifikasi'
         };
     }
 
@@ -47,6 +48,42 @@ export default class Payment extends Component{
 
     componentDidMount(){
         this.getDataPrev();
+    }
+
+    saveData = async() => {
+        await AsyncStorage.getItem('dataBooking')
+        .then(
+            req => JSON.parse(req)
+        )
+        .then(
+            json => {
+                        console.log(json)
+                        const orderData = {
+                            userid: json.collection._id,
+                            tanggal_booking: json.tanggal,
+                            waktu: [json.hour, json.hour2, " : ", json.minute, json.minute2],
+                            keluhan: json.keluhan,
+                            alamat: json.alamat,
+                            status: this.state.status
+                        }
+                        console.log("hey", orderData)
+                        axios.post('http://10.0.2.2:3000/orders/', orderData)
+                        .then(
+                            res => {
+                                console.log(res.data);
+                                alert('Berhasil Order');
+                                this.props.navigation.navigate('BuktiPembayaran');
+                            }
+                        ) 
+                        .catch(err => {
+                            console.log("API Error: " , err.message);
+                            console.error(err.res.data)
+                        });
+                    }
+        )
+        .catch(
+            error => console.log(error)
+        )
     }
 
     // handleChoosePhoto(){
@@ -118,7 +155,7 @@ export default class Payment extends Component{
                             </View>
 
                             <View style={{paddingLeft:normalize(30), paddingRight:normalize(30), paddingBottom:normalize(20), paddingTop:normalize(20)}}>
-                                <Button onPress={() => this.props.navigation.navigate('BuktiPembayaran')} full style={{borderRadius:10, height:normalize(40), backgroundColor:'#55BF3B', width:normalize(300)}}>
+                                <Button onPress={() => this.saveData()} full style={{borderRadius:10, height:normalize(40), backgroundColor:'#55BF3B', width:normalize(300)}}>
                                     <Text style={styles.text4}>Selanjutnya</Text>
                                 </Button>
                             </View>
