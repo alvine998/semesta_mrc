@@ -45,7 +45,7 @@ export default class Register extends Component{
             password: this.state.password
         }
         console.log("hello", user)
-        axios.post(`http://10.0.2.2:3000/users`, user)
+        axios.post(`http://10.0.2.2:4000/users`, user)
             .then(res => {
                 console.log(res.data);
                 Alert.alert("Berhasil Daftar")

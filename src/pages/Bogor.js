@@ -22,7 +22,8 @@ export default class Bogor extends Component{
             hour:'',
             hour2:'',
             minute:'',
-            minute2:''
+            minute2:'',
+            area:'bogor'
         };
     }
 
@@ -32,7 +33,7 @@ export default class Bogor extends Component{
             (values, collection) => {
                 console.log(values);
                 this.setState({email: values})
-                axios.get(`http://10.0.2.2:3000/users/${values}`)
+                axios.get(`http://10.0.2.2:4000/users/${values}`)
                 .then(
                     res => {
                         collection = res.data;
@@ -59,7 +60,8 @@ export default class Bogor extends Component{
             hour: this.state.hour,
             hour2: this.state.hour2,
             minute: this.state.minute,
-            minute2: this.state.minute2
+            minute2: this.state.minute2,
+            area: this.state.area
         }
         try{
             await AsyncStorage.setItem('dataBooking', JSON.stringify(dataBook))

@@ -26,7 +26,7 @@ export default class BuktiPembayaran extends Component{
                             <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white'}}>Hubungi Nomor Ini Untuk Verifikasi 081223421842</Text>
                         </View>
                         <View style={{paddingTop:normalize(30)}}>
-                            <Button onPress={() => this.props.navigation.navigate('Home')} full danger style={{borderRadius:10, height:normalize(40), width:normalize(280), alignItems:'center', justifyContent:'center'}}>
+                            <Button onPress={() => this.props.navigation.push('Home')} full danger style={{borderRadius:10, height:normalize(40), width:normalize(280), alignItems:'center', justifyContent:'center'}}>
                             <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white'}}>Kembali</Text>
                             </Button>
                         </View>

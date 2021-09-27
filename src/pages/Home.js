@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert, BackHandler } from 'react-native';
 import normalize from 'react-native-normalize';
-import { bandung, bannerpromo, bogor, depok, jakarta, jogja, logo, surabaya } from '../assets';
+import { bandung, bannerpromo, bogor, brosur, depok, jakarta, jogja, logo, surabaya } from '../assets';
 import {SliderBox} from 'react-native-image-slider-box';
 import { Button } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -21,7 +21,8 @@ export default class Home extends Component{
             values:'',
             id:'',
             collection:[],
-            call:[]
+            calls:[],
+            testing:[]
         }
     }
 
@@ -29,31 +30,68 @@ export default class Home extends Component{
     getDataEmail = async () => {
         await AsyncStorage.getItem('emailkey')
         .then(
-            (values, collection, call) => {
+            (values, collection) => {
                 console.log(values);
                 this.setState({valMail:values});
                 console.log(this.state.valMail)
                 // Mengambil data user
-                axios.get(`http://10.0.2.2:3000/users/${values}`)
+                axios.get(`http://10.0.2.2:4000/users/${values}`)
                 .then(
                     res => {
                         collection = res.data;
                         console.log(collection._id);
                         this.setState({collection});
                         // Mengambil data order
+                        const collects = collection._id;
                         console.log(collection._id)
-                        axios.get(`http://10.0.2.2:3000/orders/${collection._id}`)
+                        this.testGet(collects);
+                        
+                    }
+                )
+                
+            }
+        )
+    }
+
+    testGet(collects){
+        axios.get(`http://10.0.2.2:4000/orders/${collects}`)
                         .then(
                             response => {
-                                call = response.data;
-                                console.log(call);
-                                this.setState({call})
+                                const calls = response.data;
+                                console.log("Status : ", calls.map(status => status.status));
+                                this.setState({calls})
                             }
+                        )
+    }
+
+    renderValue(){
+        return this.state.calls.map((res,i) => {
+            if(res.status == 'belum verifikasi'){
+                return(
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('BuktiPembayaran')} style={{paddingBottom:normalize(10)}}>
+                        <View style={{width:'100%', height:normalize(40), backgroundColor:'#A746A3', borderRadius:10, paddingTop:normalize(8)}}>
+                            <Text key={i} style={{color:'white', textAlign:'center'}}>{res.status}</Text>
+                        </View>
+                    </TouchableOpacity>
+                )
+            }
+            else if(res.status == 'sudah verifikasi'){
+                this.state.call.reverse() && this.state.call.map( respons => 
+                    {
+                        return(
+                            <TouchableOpacity onPress={() => Alert.alert("Terimakasih telah booking")}>
+                                <View style={{width:'100%', height:normalize(40), backgroundColor:'#A746A3', borderRadius:10, paddingTop:normalize(8)}}>
+                                    <Text style={{color:'white', textAlign:'center'}}>Sudah Diverifikasi</Text>
+                                </View>
+                            </TouchableOpacity>
                         )
                     }
                 )
             }
-        )
+            else{
+                return null;
+            }
+        })
     }
 
     alertNullLogin(){
@@ -101,50 +139,36 @@ export default class Home extends Component{
         Alert.alert('Anda telah logout')
     }
 
-    renderItem(){
-        if(this.state.call.userid){
-            return(
-                <View style={{paddingTop:normalize(20)}}>
-                    <View style={styles.theme2}>
-                        <Text style={styles.text1}>Reservasi Terapi</Text>
-                        <View style={{paddingTop:normalize(20)}}>
-                            {this.renderItemNull()}
-                        </View> 
-                    </View>
-                </View>
-            )
-        }
-        else {
-            return null;
-        }
+    // renderItem(){
+    //     if(this.state.call.userid){
+    //         return(
+    //             <View style={{paddingTop:normalize(20)}}>
+    //                 <View style={styles.theme2}>
+    //                     <Text style={styles.text1}>Reservasi Terapi</Text>
+    //                     <View style={{paddingTop:normalize(20)}}>
+    //                         {this.renderItemNull()}
+    //                     </View> 
+    //                 </View>
+    //             </View>
+    //         )
+    //     }
+    //     else {
+    //         return null;
+    //     }
         
-    }
+    // }
 
-    renderItemNull(){
-        if(this.state.call.status == 'belum verifikasi'){
-            return(
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('BuktiPembayaran')}>
-                    <View style={{width:'100%', height:normalize(40), backgroundColor:'#A746A3', borderRadius:10, paddingTop:normalize(8)}}>
-                        <Text style={{color:'white', textAlign:'center'}}>Belum Diverifikasi</Text>
-                    </View>
-                </TouchableOpacity>
-            )
-        }
-        else if(this.state.call.status == 'sudah verifikasi') {
-            return(
-                <TouchableOpacity>
-                    <View style={{width:'100%', height:normalize(40), backgroundColor:'#A746A3', borderRadius:10, paddingTop:normalize(8)}}>
-                        <Text style={{color:'white', textAlign:'center'}}>Sudah Diverifikasi</Text>
-                    </View>
-                </TouchableOpacity>
-            )
-        }
-        else {
-            return(
-                null
-            )
-        }
-    }
+    // renderItemNull(){
+    //         if(this.state.call.status == 'belum verifikasi'){
+    //             this.state.call.reverse() && this.state.call.map( respons => 
+    //                 {
+    
+    //                 }
+    //             )
+    //         }
+    
+        
+    // }
 
     render(){
         const navigate = this.props;
@@ -215,7 +239,23 @@ export default class Home extends Component{
                         </View>
 
                         {/* Order List */}
-                        {this.renderItem()}
+                       
+                        {
+                            this.state.collection._id ?
+                            (
+                                <View style={{paddingTop:normalize(20)}}>
+                                    <View style={styles.theme2}>
+                                        <Text style={styles.text1}>Reservasi Terapi</Text>
+                                        <View style={{paddingTop:normalize(20)}}>
+                                            {
+                                                this.renderValue()
+                                            }
+                                        </View> 
+                                    </View>
+                                </View>
+                            ):<View/>
+                        }
+                        
                      
                             {/* <View style={{paddingTop:normalize(20)}}>
                                 <View style={styles.theme2}>
@@ -236,7 +276,7 @@ export default class Home extends Component{
                         <View style={{paddingTop:normalize(40)}}>
                             <Text style={styles.text3}>SPESIAL PROMO</Text>
                             <View style={{alignItems:'center', justifyContent:'center'}}>
-                                <Image source={bannerpromo} style={{width:normalize(300), height:normalize(185)}} />
+                                <Image source={brosur} style={{width:normalize(350), height:normalize(200)}} />
                             </View>
                         </View>
 

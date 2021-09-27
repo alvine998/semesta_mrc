@@ -19,7 +19,8 @@ export default class Payment extends Component{
             waktu:'',
             singleFile:[],
             foto: null,
-            status:'belum verifikasi'
+            status:'belum verifikasi',
+            area:''
         };
     }
 
@@ -37,7 +38,8 @@ export default class Payment extends Component{
                             nohp: json.collection.nohp,
                             tanggal: json.tanggal,
                             keluhan: json.keluhan,
-                            waktu: [json.hour, json.hour2, " : ", json.minute, json.minute2]
+                            waktu: [json.hour, json.hour2, " : ", json.minute, json.minute2],
+                            area: json.area
                         })
                 }
         )
@@ -64,10 +66,11 @@ export default class Payment extends Component{
                             waktu: [json.hour, json.hour2, " : ", json.minute, json.minute2],
                             keluhan: json.keluhan,
                             alamat: json.alamat,
-                            status: this.state.status
+                            status: this.state.status,
+                            area: json.area
                         }
                         console.log("hey", orderData)
-                        axios.post('http://10.0.2.2:3000/orders/', orderData)
+                        axios.post('http://10.0.2.2:4000/orders/', orderData)
                         .then(
                             res => {
                                 console.log(res.data);
@@ -98,7 +101,7 @@ export default class Payment extends Component{
     // }
 
     render(){
-        const {nama, alamat, keluhan, tanggal, nohp, waktu, singleFile} = this.state;
+        const {nama, alamat, keluhan, tanggal, nohp, waktu, area} = this.state;
         return(
             <View style={{backgroundColor:'#A746A3', height:'100%'}}>
                 <Header transparent style={{backgroundColor:'#93108D', height:normalize(100), borderBottomRightRadius:50}}>
@@ -118,7 +121,8 @@ export default class Payment extends Component{
                             <View style={styles.theme1}>
                                 <Text style={styles.text1}>Data Pemesan</Text>
                                 <View>
-                                    <Text style={[styles.text2, {paddingTop:normalize(20)}]}>Nama : {nama}</Text>
+                                    <Text style={[styles.text2, {paddingTop:normalize(20)}]}>Area : {area}</Text>
+                                    <Text style={styles.text2}>Nama : {nama}</Text>
                                     <Text style={styles.text2}>Alamat : {alamat}</Text>
                                     <Text style={styles.text2}>No Hp : {nohp}</Text>
                                     <Text style={styles.text2}>Tanggal : {tanggal}</Text>

@@ -22,7 +22,8 @@ export default class Jakarta extends Component{
             hour:'',
             hour2:'',
             minute:'',
-            minute2:''
+            minute2:'',
+            area:'jakarta',
         };
     }
 
@@ -32,7 +33,7 @@ export default class Jakarta extends Component{
             (values, collection) => {
                 console.log(values);
                 this.setState({email: values})
-                axios.get(`http://10.0.2.2:3000/users/${values}`)
+                axios.get(`http://10.0.2.2:4000/users/${values}`)
                 .then(
                     res => {
                         collection = res.data;
@@ -59,7 +60,8 @@ export default class Jakarta extends Component{
             hour: this.state.hour,
             hour2: this.state.hour2,
             minute: this.state.minute,
-            minute2: this.state.minute2
+            minute2: this.state.minute2,
+            area: this.state.area
         }
         try{
             await AsyncStorage.setItem('dataBooking', JSON.stringify(dataBook))
@@ -257,7 +259,7 @@ export default class Jakarta extends Component{
                                             <Text style={[styles.text5, {paddingTop:normalize(20)}]}>Waktu :</Text>
                                             <View style={{flexDirection:'row', paddingLeft:normalize(50)}}>
                                                 <TextInput
-                                                    placeholder="0"
+                                                    placeholder=""
                                                     defaultValue="0"
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
@@ -268,7 +270,7 @@ export default class Jakarta extends Component{
                                                     onChangeText={(event) => this.setState({hour: event.replace(/[^0-2]/g, '')})}
                                                 />
                                                 <TextInput
-                                                    placeholder="0"
+                                                    placeholder=""
                                                     defaultValue="0"
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
@@ -281,7 +283,7 @@ export default class Jakarta extends Component{
                                                 />
                                                 <Text style={[styles.text5, {marginTop:normalize(8)}]}> : </Text>
                                                 <TextInput
-                                                    placeholder="0"
+                                                    placeholder=""
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
                                                     underlineColorAndroid="black"
@@ -291,7 +293,7 @@ export default class Jakarta extends Component{
                                                     onChangeText={(event) => {this.setState({minute: event.replace(/[^0-5]/g, '')})}}
                                                 />
                                                 <TextInput
-                                                    placeholder="0"
+                                                    placeholder=""
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
                                                     underlineColorAndroid="black"
