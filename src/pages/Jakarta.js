@@ -33,7 +33,7 @@ export default class Jakarta extends Component{
             (values, collection) => {
                 console.log(values);
                 this.setState({email: values})
-                axios.get(`http://10.0.2.2:4000/users/${values}`)
+                axios.get(`https://api.tutorialbyalvine.com/users/${values}`)
                 .then(
                     res => {
                         collection = res.data;
@@ -87,11 +87,28 @@ export default class Jakarta extends Component{
         else if(!this.state.alamat){
             Alert.alert("Harap isi bagian alamat")
         }
+        
         else if(this.state.checkeds){
-            this.props.navigation.navigate('BuktiPembayaran')
+            this.props.navigation.navigate('Payment')
         }
         else {
-            this.props.navigation.navigate('Payment')
+            if(!this.state.date){
+                Alert.alert("Harap isi bagian tanggal")
+            }
+            else if(!this.state.hour){
+                Alert.alert("Harap isi bagian waktu")
+            }
+            else if(!this.state.hour2){
+                Alert.alert("Harap isi bagian waktu")
+            }
+            else if(!this.state.minute){
+                Alert.alert("Harap isi bagian waktu")
+            }
+            else if(!this.state.minute2){
+                Alert.alert("Harap isi bagian waktu")
+            } else {
+                this.props.navigation.navigate('Payment')
+            }
         }
     }
     

@@ -41,7 +41,7 @@ export default class Login extends Component {
             password: this.state.password
         }
 
-        axios.post('http://10.0.2.2:4000/userss/login', authYes)
+        axios.post('https://api.tutorialbyalvine.com/userss/login', authYes)
         .then( res => {
             console.log(res.data)
             Alert.alert("Login Sukses")

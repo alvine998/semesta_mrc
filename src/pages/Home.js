@@ -35,7 +35,7 @@ export default class Home extends Component{
                 this.setState({valMail:values});
                 console.log(this.state.valMail)
                 // Mengambil data user
-                axios.get(`http://10.0.2.2:4000/users/${values}`)
+                axios.get(`https://api.tutorialbyalvine.com/users/${values}`)
                 .then(
                     res => {
                         collection = res.data;
@@ -54,7 +54,7 @@ export default class Home extends Component{
     }
 
     testGet(collects){
-        axios.get(`http://10.0.2.2:4000/orders/${collects}`)
+        axios.get(`https://api.tutorialbyalvine.com/orders/${collects}`)
                         .then(
                             response => {
                                 const calls = response.data;

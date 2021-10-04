@@ -1,11 +1,12 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { Body, Button, Header, Icon, Left } from "native-base";
 import React, {Component} from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
 import normalize from "react-native-normalize";
 import { bca } from "../assets";
 import axios from "axios";
 import * as ImagePicker from 'react-native-image-picker';
+import Clipboard from "@react-native-community/clipboard";
 
 export default class Payment extends Component{
     constructor(props){
@@ -70,7 +71,7 @@ export default class Payment extends Component{
                             area: json.area
                         }
                         console.log("hey", orderData)
-                        axios.post('http://10.0.2.2:4000/orders/', orderData)
+                        axios.post('https://api.tutorialbyalvine.com/orders/', orderData)
                         .then(
                             res => {
                                 console.log(res.data);
@@ -99,6 +100,11 @@ export default class Payment extends Component{
     //         this.setState({singleFile})
     //     })
     // }
+
+    showToast(){
+        Clipboard.setString('5771159428');
+        ToastAndroid.show("Nomor Rekening Telah Disalin", ToastAndroid.SHORT);
+    }
 
     render(){
         const {nama, alamat, keluhan, tanggal, nohp, waktu, area} = this.state;
@@ -147,14 +153,11 @@ export default class Payment extends Component{
                                         Pastikan nomor ponsel benar dan terhubung ke whatsapp
                                         dan alamat email yang benar.
                                     </Text>
-                                    
-                                    {/* Image Picker
-                                    <View style={{paddingTop:normalize(20)}}>
-                                        { singleFile != null ? (<Text>{singleFile.height}</Text> ) : null}
-                                        <Button full primary onPress={() => this.handleChoosePhoto()}>
-                                            <Text>Select</Text>
+                                    <View style={{paddingTop:normalize(10), paddingBottom:normalize(10)}}>
+                                        <Button onPress={() => this.showToast()} full style={{height:normalize(40), width:normalize(280), borderRadius:10, backgroundColor:'#A746A3'}}>
+                                            <Text style={styles.text2}>Salin Nomor Rekening</Text>
                                         </Button>
-                                    </View> */}
+                                    </View>
                                 </View>
                             </View>
 
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
         padding:normalize(20)
     },
     theme2:{
-        height:normalize(350),
+        height:normalize(370),
         width:normalize(300),
         backgroundColor:'#93108D',
         borderRadius:20,

@@ -1,6 +1,7 @@
+import Clipboard from "@react-native-community/clipboard";
 import { Button } from "native-base";
 import React, {Component} from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, Linking, ScrollView, Text, ToastAndroid, View } from "react-native";
 import normalize from "react-native-normalize";
 import { waiting } from "../assets";
 
@@ -10,6 +11,11 @@ export default class BuktiPembayaran extends Component{
         this.state={
 
         }
+    }
+
+    showToast(){
+        ToastAndroid.show('Nomor Telepon Disalin', ToastAndroid.SHORT);
+        Clipboard.setString('081223421842');
     }
 
     render(){
@@ -23,11 +29,21 @@ export default class BuktiPembayaran extends Component{
                         />
                         <View style={{paddingLeft:normalize(30), paddingRight:normalize(30)}}>
                             <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(24), color:'white'}}>Harap Menunggu Verifikasi Pembayaran Anda Ya</Text>
-                            <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white'}}>Hubungi Nomor Ini Untuk Verifikasi 081223421842</Text>
+                            <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white'}}>Hubungi Nomor Ini Untuk Kirim Bukti Pembayaran 081223421842</Text>
+                            <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white', textAlign:'center', paddingTop:normalize(10)}}>Atau</Text>
+                            
                         </View>
-                        <View style={{paddingTop:normalize(30)}}>
+                        <View style={{paddingTop:normalize(10), paddingBottom:normalize(20)}}>
+                            <Button onPress={() => Linking.openURL(`https://wa.me/6281223421842?text=Halo+Saya+Mau+Kirim+Bukti+Transfer`)} full success style={{borderRadius:10, height:normalize(40), width:normalize(280), alignItems:'center', justifyContent:'center'}}>
+                                <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white'}}>Whatsapp Disini</Text>
+                            </Button>
+                            <View style={{paddingTop:normalize(10)}}/>
+                            <Button onPress={() => this.showToast()} full primary style={{borderRadius:10, height:normalize(40), width:normalize(280), alignItems:'center', justifyContent:'center'}}>
+                                <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white'}}>Salin Nomor Telepon</Text>
+                            </Button>
+                            <View style={{paddingTop:normalize(20)}}/>
                             <Button onPress={() => this.props.navigation.push('Home')} full danger style={{borderRadius:10, height:normalize(40), width:normalize(280), alignItems:'center', justifyContent:'center'}}>
-                            <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white'}}>Kembali</Text>
+                                <Text style={{fontFamily:'RedHatDisplay-Regular', fontSize:normalize(20), color:'white'}}>Kembali</Text>
                             </Button>
                         </View>
                     </View>

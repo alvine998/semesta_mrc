@@ -33,7 +33,7 @@ export default class Bekasi extends Component{
             (values, collection) => {
                 console.log(values);
                 this.setState({email: values})
-                axios.get(`http://10.0.2.2:4000/users/${values}`)
+                axios.get(`https://api.tutorialbyalvine.com/users/${values}`)
                 .then(
                     res => {
                         collection = res.data;
@@ -259,7 +259,6 @@ export default class Bekasi extends Component{
                                             <Text style={[styles.text5, {paddingTop:normalize(20)}]}>Waktu :</Text>
                                             <View style={{flexDirection:'row', paddingLeft:normalize(50)}}>
                                                 <TextInput
-                                                    placeholder="0"
                                                     defaultValue="0"
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
@@ -270,7 +269,6 @@ export default class Bekasi extends Component{
                                                     onChangeText={(event) => this.setState({hour: event.replace(/[^0-2]/g, '')})}
                                                 />
                                                 <TextInput
-                                                    placeholder="0"
                                                     defaultValue="0"
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
@@ -283,7 +281,6 @@ export default class Bekasi extends Component{
                                                 />
                                                 <Text style={[styles.text5, {marginTop:normalize(8)}]}> : </Text>
                                                 <TextInput
-                                                    placeholder="0"
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
                                                     underlineColorAndroid="black"
@@ -293,7 +290,6 @@ export default class Bekasi extends Component{
                                                     onChangeText={(event) => {this.setState({minute: event.replace(/[^0-5]/g, '')})}}
                                                 />
                                                 <TextInput
-                                                    placeholder="0"
                                                     style={{color:'black', textAlign:'center'}}
                                                     placeholderTextColor="black"
                                                     underlineColorAndroid="black"

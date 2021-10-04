@@ -129,8 +129,8 @@ android {
         applicationId "com.semesta_mrc2"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.2"
     }
     splits {
         abi {
@@ -147,6 +147,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        // release {
+        //     storeFile file('mrckey.keystore')
+        //     storePassword '12345678'
+        //     keyAlias 'mrckey'
+        //     keyPassword '12345678'
+        // }
     }
     buildTypes {
         debug {
